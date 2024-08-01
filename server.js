@@ -16,12 +16,13 @@ async function startServer()
 {
     await dbConnection() ; 
     await expressStartup(app) ; 
+}
+
+startServer().then(() => {
     app.listen(PORT, () => {
         console.log(`Server is running on  http://localhost:${PORT} `);
     });
-}
-
-startServer().catch(error => {
+}).catch(error => {
     console.error('Failed to start the server:', error);
 });
 

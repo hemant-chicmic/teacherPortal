@@ -13,7 +13,6 @@ const studentSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     subjects: { type: [String],    required: true },
     subjectsMarks: { type: [Number],  required: true },
-    percentage: { type: Number, required: true },
 });
 
 studentSchema.pre('save', function(next) {
