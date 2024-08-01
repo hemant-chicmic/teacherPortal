@@ -1,7 +1,7 @@
 
 import Joi from 'joi' ; 
-import { asyncHandler } from '../startup/errorHandlerMiddleware.js';
 import { userController } from '../controller/userController.js';
+import { asyncHandler } from '../services/errorHandlerMiddleware.js';
 
 
 export const userRoutes = [

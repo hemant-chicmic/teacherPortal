@@ -2,7 +2,7 @@
 
 import Joi from 'joi' ; 
 import { teacherController } from "../controller/teacherController.js";
-import { asyncHandler } from "../startup/errorHandlerMiddleware.js";
+import { asyncHandler } from '../services/errorHandlerMiddleware.js';
 
 
 

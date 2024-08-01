@@ -2,9 +2,10 @@
 
 import express from "express" ;
 import { allRoutes  } from "../routes/index.js";
-import { errorHandler } from "./errorHandlerMiddleware.js";
 import { validateRequest } from "../utils/validateRequest.js";
-import { authenticateToken } from "./authMiddleware.js";
+import { authenticateToken } from "../services/authMiddleware.js";
+import { errorHandler } from "../services/errorHandlerMiddleware.js";
+
 
 
 async function expressStartup(app)

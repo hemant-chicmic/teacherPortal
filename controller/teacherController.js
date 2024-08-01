@@ -6,7 +6,7 @@ const teacherController = {};
 teacherController.addStudent = async (req, res) => {
     const { email, password, role, rollNumber, subjects, subjectsMarks, ...otherDetails } = req.body;
     const isEmailOrRollNumberExist = await checkEmailOrRollNumberExists(email, rollNumber);
-    if (isEmailOrRollNumberExist)  return res.status(401).json({ message: "Student email or roll number already exists" });
+    if (isEmailOrRollNumberExist)  return res.status(400).json({ message: "Student email or roll number already exists" });
     if (subjects.length !== subjectsMarks.length) {
         return res.status(400).json({ message: "Subjects and subjectsMarks must have the same length" });
     }
