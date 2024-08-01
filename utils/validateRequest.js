@@ -3,17 +3,23 @@
 
 export const validateRequest = (schema) => {
     return (req , res , next ) => {
-        
-        const result = schema.validate(req.body, { abortEarly: false }); 
-        if( result.error )
-        {
-            return res.status(400).json({
-                error:  result.error ,
-            });
+        if (schema.params) {
+            const { error } = schema.params.validate(req.params, { abortEarly: false });
+            if (error) {
+                return res.status(400).json({
+                    error: error.details.map(err => err.message),
+                });
+            }
         }
-        req.body = result.value; 
-        console.log( req.body ) ; 
-        next() ;
+        if (schema.body) {
+            const { error } = schema.body.validate(req.body, { abortEarly: false });
+            if (error) {
+                return res.status(400).json({
+                    error: error.details.map(err => err.message),
+                });
+            }
+        }
+        next();
     }
 }
 

@@ -87,7 +87,10 @@ export const getTeacherSubjects = async (teacherID) => {
 };
 
 
-
+export const isEmailAlreadyInUse = async (email, currentTeacherID) => {
+    const existingTeacher = await teacherModel.findOne({ email });
+    return existingTeacher && existingTeacher._id.toString() !== currentTeacherID;
+};
 
 
 

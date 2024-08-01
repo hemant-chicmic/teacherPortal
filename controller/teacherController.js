@@ -21,9 +21,9 @@ const teacherController = {};
 // };
 
 teacherController.updateStudentDetails = async (req, res) => {
-    const { rollNo } = req.params;
+    const { studentID } = req.params;
     const teacherID = req.user._id;
-    const studentExist = await isStudentExist(rollNo);
+    const studentExist = await isStudentExist(studentID);
     if ( !studentExist) return res.status(400).json({ message: "Student doesn't  exists" });
     const updateData = req.body;
     if (updateData.subjects && updateData.subjectsMarks && updateData.subjects.length !== updateData.subjectsMarks.length) {
@@ -38,7 +38,7 @@ teacherController.updateStudentDetails = async (req, res) => {
             return res.status(400).json({ message: `You don't have access to update these subjects: ${invalidSubjects.join(', ')}` });
         }
     }
-    const updatedStudent = await updateStudentMarksInDB(rollNo, updateData);
+    const updatedStudent = await updateStudentMarksInDB(studentID, updateData);
     res.status(200).json({
         status: 200,
         success: true,

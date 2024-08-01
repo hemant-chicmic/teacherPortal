@@ -11,7 +11,7 @@ import { asyncHandler } from '../services/errorHandlerMiddleware.js';
 export const teacherRoutes =  [
     {
         method : 'put' ,
-        path : '/teacher/:rollNo',   // // to update the student's details
+        path : '/teacher/:studentID',   // // to update the student's details
         schema: {
             body: Joi.object({
                 subjects: Joi.array().items(Joi.string()).required(),  

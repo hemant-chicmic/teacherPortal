@@ -1,7 +1,7 @@
 
 
-import { addStudentToDB, checkEmailOrRollNoExist, deleteStudent, isStudentExist, updateStudentInDB } from '../services/studentService.js';
-import { addTeacherToDB, deleteTeacher, isTeacherExist, updateTeacherInDB } from '../services/teacherService.js';
+import { addStudentToDB, checkEmailOrRollNoExist, deleteStudent, isEmailOrRollNumberInUse, isStudentExist, updateStudentInDB } from '../services/studentService.js';
+import { addTeacherToDB, deleteTeacher, isEmailAlreadyInUse, isTeacherExist, updateTeacherInDB } from '../services/teacherService.js';
 import { generateJWTAccessToken } from '../utils/helperFunctions.js';
 import { registerAdmin , findUserByEmailAndRole, checkUserExists } from '../services/userService.js';
 import bcrypt from 'bcrypt' ;
@@ -100,6 +100,8 @@ userController.updateTeacher = async (req, res) => {
     if (!teacherExist) return res.status(404).json({ message: "Teacher doesn't exist" });
     let { name, email, password, address, age, subjects, subjectsExperience } = req.body;
     if (email) email = email.toLowerCase();
+    const emailInUse = await isEmailAlreadyInUse(email, teacherID);
+    if (emailInUse)  return res.status(400).json({ message: "Email already exists" });
     const updateData = { name, email, address, age, subjects, subjectsExperience };
     if (password) updateData.password = await bcrypt.hash(password, saltRounds);
     const updatedTeacher = await updateTeacherInDB(teacherID, updateData);
@@ -142,14 +144,16 @@ userController.addStudent = async (req, res) => {
 };
 
 userController.updateStudent = async (req, res) => {
-    const { rollNo } = req.params; 
-    const studentExist = await isStudentExist(rollNo);
+    const { studentID } = req.params; 
+    const studentExist = await isStudentExist(studentID);
     if (!studentExist) return res.status(404).json({ message: "student doesn't exist" });
     let { name, rollNumber , email, password, address, age, subjects, subjectsMarks } = req.body;
     if (email) email = email.toLowerCase();
+    const emailOrRollNumberInUse = await isEmailOrRollNumberInUse(email, rollNumber, studentID);
+    if (emailOrRollNumberInUse) return res.status(400).json({ message: "Email or roll number already exists" });
     const updateData = { name, rollNumber , email, password, address, age, subjects, subjectsMarks  };
     if (password) updateData.password = await bcrypt.hash(password, saltRounds);
-    const updateStudent = await updateStudentInDB(rollNo, updateData);
+    const updateStudent = await updateStudentInDB(studentID, updateData);
     res.status(200).json({
         status: 200,
         success: true,
@@ -159,10 +163,10 @@ userController.updateStudent = async (req, res) => {
 };
 
 userController.removeStudent = async (req, res) => {
-    const { rollNo } = req.params;
-    const studentExist = await isStudentExist(rollNo);
+    const { studentID } = req.params;
+    const studentExist = await isStudentExist(studentID);
     if ( !studentExist) return res.status(400).json({ message: "Student doesn't  exists" });
-    await deleteStudent(rollNo);
+    await deleteStudent(studentID);
     res.status(200).json({
         status: 200,
         success: true,

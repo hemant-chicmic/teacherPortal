@@ -55,7 +55,7 @@ export const userRoutes = [
         path: '/admin/updateTeacher/:teacherID',
         schema: {
             params: Joi.object({
-                teacherID: Joi.string().required()
+                teacherID: Joi.string().pattern(/^[a-fA-F0-9]{24}$/).required()
             }).required(),
             body: Joi.object({
                 name: Joi.string().required(),
@@ -73,6 +73,11 @@ export const userRoutes = [
     {
         method: 'delete',
         path: '/admin/removeteacher/:teacherID',
+        schema: {
+            params: Joi.object({
+                teacherID: Joi.string().pattern(/^[a-fA-F0-9]{24}$/).required()
+            }).required(),
+        },
         auth: true ,
         controller: asyncHandler(userController.removeTeacher)
     } ,
@@ -97,10 +102,10 @@ export const userRoutes = [
     } ,
     {
         method: 'put',
-        path: '/admin/updateStudent/:rollNo',
+        path: '/admin/updateStudent/:studentID', //   rollNo
         schema: {
             params: Joi.object({
-                studentID: Joi.string().required()
+                studentID: Joi.string().pattern(/^[a-fA-F0-9]{24}$/).required()
             }).required(),
             body: Joi.object({
                 name: Joi.string(),
@@ -118,7 +123,12 @@ export const userRoutes = [
     },
     {
         method: 'delete',
-        path: '/admin/removeStudent/:rollNo',
+        path: '/admin/removeStudent/:studentID',
+        schema: {
+            params: Joi.object({
+                studentID: Joi.string().pattern(/^[a-fA-F0-9]{24}$/).required()
+            }).required(),
+        },
         auth: true ,
         controller: asyncHandler(userController.removeStudent)
     } ,

@@ -20,7 +20,7 @@ async function expressStartup(app)
 
         const { method, path, schema = {}, auth = false, controller } = route;
         const middlewares = [];
-        if( schema.body ) middlewares.push( validateRequest(schema.body) ) ; 
+        if( schema ) middlewares.push( validateRequest(schema) ) ; 
         if( auth ) middlewares.push(authenticateToken)
         app[method](path, ...middlewares, controller);
     });
